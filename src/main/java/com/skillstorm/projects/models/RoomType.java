@@ -5,15 +5,11 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
-
 import com.skillstorm.projects.dtos.RoomTypeDto;
-import lombok.*;
+
 
 @Entity
 @Table(name = "roomtype")
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class RoomType {
 
     @Id

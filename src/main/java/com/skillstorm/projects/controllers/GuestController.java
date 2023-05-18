@@ -1,7 +1,5 @@
 package com.skillstorm.projects.controllers;
 
-import lombok.RequiredArgsConstructor;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +16,6 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/guests")
 @Validated
-@RequiredArgsConstructor
 @CrossOrigin
 public class GuestController {
 	

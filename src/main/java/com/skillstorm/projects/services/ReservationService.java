@@ -1,6 +1,5 @@
 package com.skillstorm.projects.services;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,9 +13,10 @@ import com.skillstorm.projects.repositories.ReservationRepository;
 import com.skillstorm.projects.repositories.RoomRepository;
 
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
 @Transactional
 public class ReservationService {
 
@@ -37,10 +37,10 @@ public class ReservationService {
 	
     public ReservationDto createReservation(ReservationDto reservationData) {
         Guest guest = guestRepository.findById(reservationData.getGuestId())
-                .orElseThrow();
+                .orElseThrow(() -> new NoSuchElementException("Guest not found"));
 
         Room room = roomRepository.findById(reservationData.getRoomId())
-                .orElseThrow();
+                .orElseThrow(() -> new NoSuchElementException("Room not found"));
 
         Reservation reservation = new Reservation(
                 guest,
@@ -66,24 +66,24 @@ public class ReservationService {
         return reservationRepository.findAll()
                 .stream()
                 .map(Reservation::toDto)
-                .toList();
+                .collect(Collectors.toList());
     }
 
     public ReservationDto getReservationById(Long id) {
         Reservation reservation = reservationRepository.findById(id)
-                .orElseThrow();
+                .orElseThrow(() -> new NoSuchElementException("Reservation not found"));
         return reservation.toDto();
     }
 
     public ReservationDto updateReservation(Long id, ReservationDto reservationData) {
         Reservation reservation = reservationRepository.findById(id)
-                .orElseThrow();
+                .orElseThrow(() -> new NoSuchElementException("Reservation not found"));
         
         Guest guest = guestRepository.findById(reservationData.getGuestId())
-                .orElseThrow();
+                .orElseThrow(() -> new NoSuchElementException("Guest not found"));
 
         Room room = roomRepository.findById(reservationData.getRoomId())
-                .orElseThrow();
+                .orElseThrow(() -> new NoSuchElementException("Room not found"));
         reservation.setGuest(guest);
         reservation.setRoom(room);
         reservation.setCheckInDate(reservationData.getCheckInDate());
@@ -92,6 +92,13 @@ public class ReservationService {
         reservation.setSpecialRequests(reservationData.getSpecialRequests());
 
         Reservation updatedReservation = reservationRepository.save(reservation);
+        
+     // Send update confirmation
+        String recipientEmail = guest.getEmail();
+        String subject = "Reservation Updated";
+        String content = "Dear " + guest.getName() + ", your reservation has been updated.";
+        emailService.sendEmailConfirmation(recipientEmail, subject, content);
+        
         return updatedReservation.toDto();
     }
 

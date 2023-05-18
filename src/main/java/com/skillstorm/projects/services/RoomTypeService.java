@@ -1,21 +1,19 @@
 package com.skillstorm.projects.services;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.skillstorm.projects.dtos.RoomTypeDto;
 import com.skillstorm.projects.models.RoomType;
 import com.skillstorm.projects.repositories.RoomTypeRepository;
-
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
 @Service
-@RequiredArgsConstructor
 @Transactional
 public class RoomTypeService {
 
@@ -42,7 +40,7 @@ public class RoomTypeService {
     	return roomTypeRepository.findAll()
     			.stream()
     			.map(RoomType::toDto)
-    			.toList();
+    			.collect(Collectors.toList());
     }
 
     /**
@@ -52,7 +50,8 @@ public class RoomTypeService {
      * @return The room type with the specified ID.
      */
     public RoomTypeDto getRoomTypeById(Long id) {
-        RoomType roomType = roomTypeRepository.findById(id).orElseThrow();
+        RoomType roomType = roomTypeRepository.findById(id)
+        		.orElseThrow(() -> new NoSuchElementException("Room type not found with id: " + id));
         return roomType.toDto();
     }
 

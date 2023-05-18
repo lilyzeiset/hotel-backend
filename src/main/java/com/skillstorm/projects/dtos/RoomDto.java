@@ -1,22 +1,14 @@
 package com.skillstorm.projects.dtos;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 import java.math.BigDecimal;
-
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import com.skillstorm.projects.models.RoomType;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
+
 public class RoomDto {
 
     private Long id;

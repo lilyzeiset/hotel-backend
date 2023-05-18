@@ -3,19 +3,16 @@ package com.skillstorm.projects.services;
 import com.skillstorm.projects.dtos.RoomDto;
 import com.skillstorm.projects.models.Room;
 import com.skillstorm.projects.repositories.RoomRepository;
-
-import lombok.RequiredArgsConstructor;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @Service
-@RequiredArgsConstructor
 @Transactional
 public class RoomService {
 
@@ -31,12 +28,12 @@ public class RoomService {
         return roomRepository.findAll()
                 .stream()
                 .map(Room::toDto)
-                .toList();
+                .collect(Collectors.toList());
     }
 
     public RoomDto getRoomById(Long id) {
         return roomRepository.findById(id)
-                .orElseThrow()
+                .orElseThrow(() -> new NoSuchElementException("Room not found with id: " + id))
                 .toDto();
     }
 

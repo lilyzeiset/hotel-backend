@@ -1,19 +1,17 @@
 package com.skillstorm.projects.services;
 
-import lombok.RequiredArgsConstructor;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.skillstorm.projects.dtos.GuestDto;
 import com.skillstorm.projects.models.Guest;
 import com.skillstorm.projects.repositories.GuestRepository;
 
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
 @Transactional
 public class GuestService {
 
@@ -38,18 +36,18 @@ public class GuestService {
         return guestRepository.findAll()
         		.stream()
                 .map(g -> g.toDto())
-                .toList();
+                .collect(Collectors.toList());
     }
 
     public GuestDto getGuestById(Long id) {
         return guestRepository.findById(id)
-        		.orElseThrow()
+        		.orElseThrow(() -> new NoSuchElementException("Guest not found"))
         		.toDto();
     }
 
     public GuestDto updateGuest(Long id, GuestDto guestData) {
         Guest guest = guestRepository.findById(id)
-                .orElseThrow();
+                .orElseThrow(() -> new NoSuchElementException("Guest not found"));
 
         guest.setName(guestData.getName());
         guest.setEmail(guestData.getEmail());

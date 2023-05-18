@@ -1,21 +1,14 @@
 package com.skillstorm.projects.dtos;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
-
-import lombok.AllArgsConstructor;
 
 /**
  * Data Transfer Object (DTO) class for Guest.
  * Represents the guest details.
  */
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
+
 public class GuestDto {
     /**
      * The ID of the guest.

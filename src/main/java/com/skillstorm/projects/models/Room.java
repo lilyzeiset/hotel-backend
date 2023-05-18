@@ -1,21 +1,16 @@
 package com.skillstorm.projects.models;
 
 import java.math.BigDecimal;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
-
 import com.skillstorm.projects.dtos.RoomDto;
-import lombok.*;
+
 
 @Entity
 @Table(name = "room")
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class Room {
 
     @Id

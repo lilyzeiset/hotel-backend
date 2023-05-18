@@ -1,25 +1,17 @@
 package com.skillstorm.projects.models;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 import javax.persistence.*;
 import javax.validation.constraints.Future;
 import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-
 import com.skillstorm.projects.dtos.ReservationDto;
-
 import java.time.LocalDate;
+
 
 @Entity
 @Table(name = "reservation")
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class Reservation {
 
     @Id

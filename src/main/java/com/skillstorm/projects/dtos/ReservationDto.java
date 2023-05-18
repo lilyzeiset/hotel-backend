@@ -10,13 +10,7 @@ import javax.validation.constraints.Positive;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.skillstorm.projects.models.Guest;
 import com.skillstorm.projects.models.Room;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class ReservationDto {
 
     private Long id;
