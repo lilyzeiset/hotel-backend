@@ -23,25 +23,6 @@ public class RoomController {
     private RoomService roomService;
 
 	
-//	@GetMapping("/available")
-//	public ResponseEntity<List<RoomDto>> findAvailableRooms(
-//	        @RequestParam(value = "roomType", required = false) RoomTypeDto roomType,
-//	        @RequestParam(value = "roomNumber", required = false) String roomNumber,
-//	        @RequestParam(value = "minNightlyRate", required = false) BigDecimal minNightlyRate,
-//	        @RequestParam(value = "maxNightlyRate", required = false) BigDecimal maxNightlyRate,
-//	        @RequestParam("numGuests") int numGuests,
-//	        @RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
-//	        @RequestParam("endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
-//	        @RequestParam("numResultsPerPage") int numResultsPerPage,
-//	        @RequestParam("pageNumber") int pageNumber) {
-//
-//	    List<RoomDto> availableRooms = roomService.findAvailableRooms(
-//	            roomType, roomNumber, minNightlyRate, maxNightlyRate, numGuests,
-//	            startDate, endDate, numResultsPerPage, pageNumber);
-//
-//	    return ResponseEntity.ok(availableRooms);
-//	}
-
 	@GetMapping("/available")
 	public ResponseEntity<List<RoomDto>> findAvailableRooms(
 	        @RequestParam(value = "startDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,

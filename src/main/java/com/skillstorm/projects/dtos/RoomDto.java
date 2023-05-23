@@ -45,8 +45,6 @@ public class RoomDto {
 
     public static RoomDto mapToRoomDto(Room room) {
         RoomType roomType = room.getRoomType();
-        //RoomTypeDto roomTypeDto = new RoomTypeDto(roomType.getId(), roomType.getName(), roomType.getDescription(), roomType.getMaxOccupancy());
-
         return new RoomDto(room.getId(), roomType, room.getRoomNumber(), room.getNightlyRate());
     }
 

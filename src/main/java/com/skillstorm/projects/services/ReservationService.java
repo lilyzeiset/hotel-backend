@@ -35,10 +35,24 @@ public class ReservationService {
         this.emailService = emailService;
     }
 	
+	
+	/**
+     * Retrieves all reservations for a given guest.
+     *
+     * @param guestId the ID of the guest
+     * @return a list of reservations
+     */
 	public List<Reservation>getreservationsByGuestId(Long guestId){
 		return reservationRepository.findByGuestId(guestId);
 	}
 	
+	 /**
+     * Creates a new reservation.
+     *
+     * @param reservationData the reservation data
+     * @return the created reservation
+     * @throws NoSuchElementException if guest or room is not found
+     */
     public ReservationDto createReservation(ReservationDto reservationData) {
         Guest guest = guestRepository.findById(reservationData.getGuestId())
                 .orElseThrow(() -> new NoSuchElementException("Guest not found"));
@@ -66,6 +80,12 @@ public class ReservationService {
         return savedReservation.toDto();
     }
     
+    
+    /**
+     * Retrieves all reservations.
+     *
+     * @return a list of reservations
+     */
     public List<ReservationDto> getAllReservations() {
         return reservationRepository.findAll()
                 .stream()
@@ -73,12 +93,29 @@ public class ReservationService {
                 .collect(Collectors.toList());
     }
 
+    
+    /**
+     * Retrieves a reservation by ID.
+     *
+     * @param id the ID of the reservation
+     * @return the reservation
+     * @throws NoSuchElementException if reservation is not found
+     */
     public ReservationDto getReservationById(Long id) {
         Reservation reservation = reservationRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("Reservation not found"));
         return reservation.toDto();
     }
 
+    
+    /**
+     * Updates a reservation.
+     *
+     * @param the ID of the reservation
+     * @param reservationData the updated reservation data
+     * @return the updated reservation
+     * @throws NoSuchElementException if reservation, guest, or room is not found
+     */
     public ReservationDto updateReservation(Long id, ReservationDto reservationData) {
         Reservation reservation = reservationRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("Reservation not found"));
@@ -97,7 +134,7 @@ public class ReservationService {
 
         Reservation updatedReservation = reservationRepository.save(reservation);
         
-     // Send update confirmation
+     // Sends update confirmation
         String recipientEmail = guest.getEmail();
         String subject = "Reservation Updated";
         String content = "Dear " + guest.getName() + ", your reservation has been updated.";
@@ -106,6 +143,12 @@ public class ReservationService {
         return updatedReservation.toDto();
     }
 
+    
+    /**
+     * Deletes a reservation.
+     *
+     * @param id the ID of the reservation to delete
+     */
     public void deleteReservation(Long id) {
         reservationRepository.deleteById(id);
     }
