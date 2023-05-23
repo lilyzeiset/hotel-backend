@@ -35,6 +35,10 @@ public class ReservationService {
         this.emailService = emailService;
     }
 	
+	public List<Reservation>getreservationsByGuestId(Long guestId){
+		return reservationRepository.findByGuestId(guestId);
+	}
+	
     public ReservationDto createReservation(ReservationDto reservationData) {
         Guest guest = guestRepository.findById(reservationData.getGuestId())
                 .orElseThrow(() -> new NoSuchElementException("Guest not found"));

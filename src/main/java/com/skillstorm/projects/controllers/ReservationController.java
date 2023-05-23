@@ -1,6 +1,7 @@
 package com.skillstorm.projects.controllers;
 
 import com.skillstorm.projects.dtos.ReservationDto;
+import com.skillstorm.projects.models.Reservation;
 import com.skillstorm.projects.services.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -35,6 +36,10 @@ public class ReservationController {
     	return reservationService.getReservationById(id);
     }
 
+    @GetMapping("/guest/{guestId}")
+    public List<Reservation> getReservationsByGuestId(@PathVariable Long guestId) {
+    	return reservationService.getreservationsByGuestId(guestId);
+    }
     @PutMapping("/{id}")
     public ReservationDto updateReservation(@PathVariable Long id,@RequestBody @Valid ReservationDto reservationDto) {
     	return reservationService.updateReservation(id, reservationDto);
