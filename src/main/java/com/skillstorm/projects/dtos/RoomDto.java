@@ -6,6 +6,8 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import com.skillstorm.projects.models.Room;
 import com.skillstorm.projects.models.RoomType;
 
 
@@ -41,6 +43,14 @@ public class RoomDto {
         this.nightlyRate = nightlyRate;
     }
 
+    public static RoomDto mapToRoomDto(Room room) {
+        RoomType roomType = room.getRoomType();
+        //RoomTypeDto roomTypeDto = new RoomTypeDto(roomType.getId(), roomType.getName(), roomType.getDescription(), roomType.getMaxOccupancy());
+
+        return new RoomDto(room.getId(), roomType, room.getRoomNumber(), room.getNightlyRate());
+    }
+
+    
 	public Long getId() {
 		return id;
 	}

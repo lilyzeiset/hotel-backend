@@ -3,10 +3,13 @@ package com.skillstorm.projects.controllers;
 import com.skillstorm.projects.dtos.RoomDto;
 import com.skillstorm.projects.services.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -18,6 +21,42 @@ public class RoomController {
 
 	@Autowired
     private RoomService roomService;
+
+	
+//	@GetMapping("/available")
+//	public ResponseEntity<List<RoomDto>> findAvailableRooms(
+//	        @RequestParam(value = "roomType", required = false) RoomTypeDto roomType,
+//	        @RequestParam(value = "roomNumber", required = false) String roomNumber,
+//	        @RequestParam(value = "minNightlyRate", required = false) BigDecimal minNightlyRate,
+//	        @RequestParam(value = "maxNightlyRate", required = false) BigDecimal maxNightlyRate,
+//	        @RequestParam("numGuests") int numGuests,
+//	        @RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+//	        @RequestParam("endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
+//	        @RequestParam("numResultsPerPage") int numResultsPerPage,
+//	        @RequestParam("pageNumber") int pageNumber) {
+//
+//	    List<RoomDto> availableRooms = roomService.findAvailableRooms(
+//	            roomType, roomNumber, minNightlyRate, maxNightlyRate, numGuests,
+//	            startDate, endDate, numResultsPerPage, pageNumber);
+//
+//	    return ResponseEntity.ok(availableRooms);
+//	}
+
+	@GetMapping("/available")
+	public ResponseEntity<List<RoomDto>> findAvailableRooms(
+	        @RequestParam(value = "startDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+	        @RequestParam(value = "endDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
+	        @RequestParam(value = "numGuests", required = false) Integer numGuests,
+	        @RequestParam(value = "minPrice", required = false) BigDecimal minPrice,
+	        @RequestParam(value = "maxPrice", required = false) BigDecimal maxPrice,
+	        @RequestParam(value = "numResultsPerPage", defaultValue = "10") int numResultsPerPage,
+	        @RequestParam(value = "pageNumber", defaultValue = "0") int pageNumber) {
+
+	    List<RoomDto> availableRooms = roomService.findAvailableRooms(
+	            startDate, endDate, numGuests, minPrice, maxPrice, numResultsPerPage, pageNumber);
+
+	    return ResponseEntity.ok(availableRooms);
+	}
 
      /**
      * Creates a new room.

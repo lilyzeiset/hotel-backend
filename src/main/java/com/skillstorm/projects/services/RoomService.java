@@ -4,8 +4,12 @@ import com.skillstorm.projects.dtos.RoomDto;
 import com.skillstorm.projects.models.Room;
 import com.skillstorm.projects.repositories.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -19,7 +23,61 @@ public class RoomService {
 	@Autowired
     private RoomRepository roomRepository;
 
-    public RoomDto createRoom(RoomDto roomData) {
+//	public List<RoomDto> findAvailableRooms(
+//	        RoomTypeDto roomType,
+//	        String roomNumber,
+//	        BigDecimal minNightlyRate,
+//	        BigDecimal maxNightlyRate,
+//	        Integer numGuests,
+//	        LocalDate startDate,
+//	        LocalDate endDate,
+//	        int numResultsPerPage,
+//	        int pageNumber) {
+//
+//	    RoomType roomTypeEntity = null;
+//	    if (roomType != null) {
+//	        roomTypeEntity = new RoomType(
+//	                roomType.getId(),
+//	                roomType.getName(),
+//	                roomType.getDescription(),
+//	                roomType.getMaxOccupancy()
+//	        );
+//	    }
+//
+//	    List<Room> availableRooms = roomRepository.findAvailableRooms(
+//	            roomTypeEntity, roomNumber, minNightlyRate, maxNightlyRate, numGuests,
+//	            startDate, endDate, PageRequest.of(pageNumber, numResultsPerPage));
+//
+//	    List<RoomDto> availableRoomDtos = availableRooms.stream()
+//	            .map(Room::toDto)
+//	            .collect(Collectors.toList());
+//
+//	    return availableRoomDtos;
+//	}
+
+	public List<RoomDto> findAvailableRooms(
+	        LocalDate startDate,
+	        LocalDate endDate,
+	        int numGuests,
+	        BigDecimal minPrice,
+	        BigDecimal maxPrice,
+	        int numResultsPerPage,
+	        int pageNumber) {
+
+	    List<Room> availableRooms = roomRepository.findAvailableRooms(
+	            startDate, endDate, numGuests, minPrice, maxPrice,
+	            PageRequest.of(pageNumber, numResultsPerPage));
+
+	    List<RoomDto> availableRoomDtos = availableRooms.stream()
+	            .map(Room::toDto)
+	            .collect(Collectors.toList());
+
+	    return availableRoomDtos;
+	}
+
+
+		
+	public RoomDto createRoom(RoomDto roomData) {
         Room room = new Room(roomData.getId(), roomData.getRoomType(), roomData.getRoomNumber(), roomData.getNightlyRate());
         return roomRepository.save(room).toDto();
     }
