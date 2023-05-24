@@ -43,13 +43,19 @@ public class GuestDto {
 	@NotBlank
     @Size(max = 255)
     private String address;
+	
+	@NotBlank(message = "Password is required")
+    @Size(min = 8, max = 100)
+    private String password;
+	
     
-    public GuestDto(Long id, String name, String email, String phoneNumber, String address) {
+    public GuestDto(Long id, String name, String email, String phoneNumber, String address, String password) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.address = address;
+        this.password = password;
     }
 
 	public Long getId() {
@@ -90,6 +96,14 @@ public class GuestDto {
 
 	public void setAddress(String address) {
 		this.address = address;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
     
 	    

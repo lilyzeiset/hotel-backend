@@ -1,6 +1,10 @@
 package com.skillstorm.projects.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.skillstorm.projects.dtos.GuestDto;
@@ -13,10 +17,14 @@ import java.util.stream.Collectors;
 
 @Service
 @Transactional
-public class GuestService {
+public class GuestService implements UserDetailsService{
 
 	@Autowired
     private GuestRepository guestRepository;
+	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+	
 
     public GuestDto createGuest(GuestDto guestData) {
     	// Checks if the email is already used
@@ -28,7 +36,7 @@ public class GuestService {
         if (guestRepository.existsByPhoneNumber(guestData.getPhoneNumber())) {
             throw new IllegalArgumentException("Phone number already exists");
         }
-        Guest guest = new Guest(guestData.getId(), guestData.getName(), guestData.getEmail(), guestData.getPhoneNumber(), guestData.getAddress());
+        Guest guest = new Guest(guestData.getId(), guestData.getName(), guestData.getEmail(), guestData.getPhoneNumber(), guestData.getAddress(), passwordEncoder.encode(guestData.getPassword()));
         return guestRepository.save(guest).toDto();
     }
 
@@ -53,6 +61,7 @@ public class GuestService {
         guest.setEmail(guestData.getEmail());
         guest.setPhoneNumber(guestData.getPhoneNumber());
         guest.setAddress(guestData.getAddress());
+        guest.setPassword(passwordEncoder.encode(guestData.getPassword()));
 
         Guest updatedGuest = guestRepository.save(guest);
         return updatedGuest.toDto();
@@ -61,4 +70,12 @@ public class GuestService {
     public void deleteGuest(Long id) {
         guestRepository.deleteById(id);
     }
+
+    
+	@Override
+	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+		Guest guest = guestRepository.findByEmail(email)
+										.orElseThrow(() -> new UsernameNotFoundException(email + " not found."));
+		return guest;
+	}
 }
