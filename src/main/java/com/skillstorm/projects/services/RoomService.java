@@ -41,7 +41,7 @@ public class RoomService {
      * @param pageNumber        The page number.
      * @return The list of available rooms.
      */
-	public Page<RoomDto> findAvailableRooms(
+	public List<RoomDto> findAvailableRooms(
 			@NotNull LocalDate startDate,
 			@NotNull LocalDate endDate,
 			@Min(1) int numGuests,
@@ -50,7 +50,7 @@ public class RoomService {
 	        int numResultsPerPage,
 	        int pageNumber) {
 
-	    Page<Room> availableRooms = roomRepository.findAvailableRooms(
+	    List<Room> availableRooms = roomRepository.findAvailableRooms(
 	            startDate, endDate, numGuests, minPrice, maxPrice,
 	            PageRequest.of(pageNumber, numResultsPerPage));
 
@@ -58,7 +58,18 @@ public class RoomService {
 	            .map(Room::toDto)
 	            .collect(Collectors.toList());
 
-	    return new PageImpl<>(availableRoomDtos, availableRooms.getPageable(), availableRooms.getTotalElements());
+	    //return new PageImpl<>(availableRoomDtos, availableRooms.getPageable(), availableRooms.getTotalElements());
+	    return availableRoomDtos;
+	}
+	
+	public int findAvailableRoomsTotal(
+			@NotNull LocalDate startDate,
+			@NotNull LocalDate endDate,
+			@Min(1) int numGuests,
+	        BigDecimal minPrice,
+	        BigDecimal maxPrice) {
+		
+		return roomRepository.findAvailableRoomsTotal(startDate, endDate, numGuests, minPrice, maxPrice);
 	}
 
 
