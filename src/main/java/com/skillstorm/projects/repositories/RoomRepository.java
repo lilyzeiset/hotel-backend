@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -31,7 +32,7 @@ public interface RoomRepository extends JpaRepository<Room, Long>{
 	        "       (res.checkInDate <= :startDate AND res.checkOutDate >= :endDate) OR " +
 	        "       (res.checkInDate >= :startDate AND res.checkOutDate <= :endDate))" +
 	        ")")
-	List<Room> findAvailableRooms(
+	Page<Room> findAvailableRooms(
 	        @Param("startDate") LocalDate startDate,
 	        @Param("endDate") LocalDate endDate,
 	        @Param("numGuests") int numGuests,

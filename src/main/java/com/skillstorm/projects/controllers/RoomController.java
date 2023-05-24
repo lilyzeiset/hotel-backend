@@ -3,6 +3,7 @@ package com.skillstorm.projects.controllers;
 import com.skillstorm.projects.dtos.RoomDto;
 import com.skillstorm.projects.services.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,16 +25,16 @@ public class RoomController {
 
 	
 	@GetMapping("/available")
-	public ResponseEntity<List<RoomDto>> findAvailableRooms(
+	public ResponseEntity<Page<RoomDto>> findAvailableRooms(
 	        @RequestParam(value = "startDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
 	        @RequestParam(value = "endDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
 	        @RequestParam(value = "numGuests", required = false) Integer numGuests,
 	        @RequestParam(value = "minPrice", required = false) BigDecimal minPrice,
 	        @RequestParam(value = "maxPrice", required = false) BigDecimal maxPrice,
-	        @RequestParam(value = "numResultsPerPage", defaultValue = "10") int numResultsPerPage,
+	        @RequestParam(value = "numResultsPerPage") int numResultsPerPage,
 	        @RequestParam(value = "pageNumber", defaultValue = "0") int pageNumber) {
 
-	    List<RoomDto> availableRooms = roomService.findAvailableRooms(
+	    Page<RoomDto> availableRooms = roomService.findAvailableRooms(
 	            startDate, endDate, numGuests, minPrice, maxPrice, numResultsPerPage, pageNumber);
 
 	    return ResponseEntity.ok(availableRooms);

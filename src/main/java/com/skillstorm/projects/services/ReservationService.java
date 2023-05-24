@@ -74,8 +74,7 @@ public class ReservationService {
         // Send email confirmation
         String recipientEmail = guest.getEmail();
         String subject = "Reservation Confirmation";
-        String content = "Dear " + guest.getName() + ", your reservation has been confirmed.";
-        emailService.sendEmailConfirmation(recipientEmail, subject, content);
+        emailService.sendEmailConfirmation(recipientEmail, subject, reservation);
 
         return savedReservation.toDto();
     }
@@ -137,8 +136,7 @@ public class ReservationService {
      // Sends update confirmation
         String recipientEmail = guest.getEmail();
         String subject = "Reservation Updated";
-        String content = "Dear " + guest.getName() + ", your reservation has been updated.";
-        emailService.sendEmailConfirmation(recipientEmail, subject, content);
+        emailService.sendEmailConfirmation(recipientEmail, subject, reservation);
         
         return updatedReservation.toDto();
     }
