@@ -33,7 +33,6 @@ public interface RoomRepository extends JpaRepository<Room, Long>{
 	        "       (res.checkInDate <= :startDate AND res.checkOutDate >= :endDate) OR " +
 	        "       (res.checkInDate >= :startDate AND res.checkOutDate <= :endDate))" +
 	        ")")
-	
 	List<Room> findAvailableRooms(
 	        @Param("startDate") LocalDate startDate,
 	        @Param("endDate") LocalDate endDate,

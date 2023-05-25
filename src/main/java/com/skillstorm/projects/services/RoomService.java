@@ -56,8 +56,18 @@ public class RoomService {
 	            .map(Room::toDto)
 	            .collect(Collectors.toList());
 
-	  //return new PageImpl<>(availableRoomDtos, availableRooms.getPageable(), availableRooms.getTotalElements());
+	    //return new PageImpl<>(availableRoomDtos, availableRooms.getPageable(), availableRooms.getTotalElements());
 	    return availableRoomDtos;
+	}
+	
+	public int findAvailableRoomsTotal(
+			@NotNull LocalDate startDate,
+			@NotNull LocalDate endDate,
+			@Min(1) int numGuests,
+	        BigDecimal minPrice,
+	        BigDecimal maxPrice) {
+		
+		return roomRepository.findAvailableRoomsTotal(startDate, endDate, numGuests, minPrice, maxPrice);
 	}
 
 	public int findAvailableRoomsTotal(

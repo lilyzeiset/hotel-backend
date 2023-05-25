@@ -38,6 +38,18 @@ public class RoomController {
 
 	    return ResponseEntity.ok(availableRooms);
 	}
+	
+	@GetMapping("/available/total")
+	public ResponseEntity<Integer> findAvailableRoomsTotal(
+			@RequestParam(value = "startDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+	        @RequestParam(value = "endDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
+	        @RequestParam(value = "numGuests", required = false) Integer numGuests,
+	        @RequestParam(value = "minPrice", required = false) BigDecimal minPrice,
+	        @RequestParam(value = "maxPrice", required = false) BigDecimal maxPrice) {
+		
+		return ResponseEntity.ok(roomService.findAvailableRoomsTotal(startDate, endDate, 0, minPrice, maxPrice));
+		
+	}
 
 	@GetMapping("/available/total")
 	public ResponseEntity<Integer> findAvailableRoomsTotal(
