@@ -3,14 +3,20 @@ package com.skillstorm.projects.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import com.skillstorm.projects.models.Guest;
 import com.skillstorm.projects.dtos.GuestDto;
 import com.skillstorm.projects.services.GuestService;
 
+import java.security.Principal;
+import java.util.Base64;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @RestController
@@ -21,6 +27,19 @@ public class GuestController {
 	
 	@Autowired
     private GuestService guestService;
+	
+	/**
+	 * Performs authentication
+	 * 
+	 * @param principal
+	 * @param auth
+	 * @return The logged in user
+	 */
+	@PostMapping("/login")
+	public ResponseEntity<GuestDto> login(Principal principal, Authentication auth) {
+    	Guest user = (Guest) guestService.loadUserByUsername(principal.getName());
+        return ResponseEntity.ok(user.toDto());
+	}
 
 	/**
      * Create a new guest.
