@@ -70,16 +70,6 @@ public class RoomService {
 		return roomRepository.findAvailableRoomsTotal(startDate, endDate, numGuests, minPrice, maxPrice);
 	}
 
-	public int findAvailableRoomsTotal(
-			@NotNull LocalDate startDate,
-			@NotNull LocalDate endDate,
-			@Min(1) int numGuests,
-	        BigDecimal minPrice,
-	        BigDecimal maxPrice) {
-		
-		return roomRepository.findAvailableRoomsTotal(startDate, endDate, numGuests, minPrice, maxPrice);
-	}
-
 	/**
      * Create a new room.
      *

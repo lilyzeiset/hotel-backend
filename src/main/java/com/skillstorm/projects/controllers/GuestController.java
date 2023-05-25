@@ -41,19 +41,6 @@ public class GuestController {
     	Guest user = (Guest) guestService.loadUserByUsername(principal.getName());
         return ResponseEntity.ok(user.toDto());
 	}
-
-	/**
-	 * Performs authentication
-	 * 
-	 * @param principal
-	 * @param auth
-	 * @return The logged in user
-	 */
-	@PostMapping("/login")
-	public ResponseEntity<GuestDto> login(Principal principal, Authentication auth) {
-    	Guest user = (Guest) guestService.loadUserByUsername(principal.getName());
-        return ResponseEntity.ok(user.toDto());
-	}
 	
 	/**
      * Create a new guest.
