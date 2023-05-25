@@ -66,7 +66,7 @@ public class ReservationController {
      * @return The list of reservations for the guest.
      */
     @GetMapping("/guest/{guestId}")
-    public List<Reservation> getReservationsByGuestId(@PathVariable Long guestId) {
+    public List<ReservationDto> getReservationsByGuestId(@PathVariable Long guestId) {
     	return reservationService.getreservationsByGuestId(guestId);
     }
     
@@ -79,6 +79,7 @@ public class ReservationController {
      */
     @PutMapping("/{id}")
     public ReservationDto updateReservation(@PathVariable Long id,@RequestBody @Valid ReservationDto reservationDto) {
+    	reservationDto.setId(id);
     	return reservationService.updateReservation(id, reservationDto);
     }
 

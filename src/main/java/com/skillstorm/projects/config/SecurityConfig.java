@@ -32,8 +32,8 @@ public class SecurityConfig {
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
-				.mvcMatchers(HttpMethod.POST, "/login", "/roomtypes","/guests", "/guests/**").permitAll()
-				.mvcMatchers("/reservations","/reservations/**","/rooms").authenticated()
+//				.mvcMatchers(HttpMethod.POST, "/login", "/roomtypes","/guests", "/guests/**").permitAll()
+//				.mvcMatchers("/reservations","/reservations/**","/rooms").authenticated()
 				.anyRequest().permitAll()
 				.and()
 			.httpBasic()

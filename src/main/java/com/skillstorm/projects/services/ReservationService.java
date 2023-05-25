@@ -42,8 +42,11 @@ public class ReservationService {
      * @param guestId the ID of the guest
      * @return a list of reservations
      */
-	public List<Reservation>getreservationsByGuestId(Long guestId){
-		return reservationRepository.findByGuestId(guestId);
+	public List<ReservationDto>getreservationsByGuestId(Long guestId){
+		return reservationRepository.findByGuestId(guestId)
+                .stream()
+                .map(Reservation::toDto)
+                .collect(Collectors.toList());
 	}
 	
 	 /**
@@ -126,6 +129,7 @@ public class ReservationService {
      * @throws NoSuchElementException if reservation, guest, or room is not found
      */
     public ReservationDto updateReservation(Long id, ReservationDto reservationData) {
+    	System.out.println(reservationData.toString());
         Reservation reservation = reservationRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("Reservation not found"));
 
