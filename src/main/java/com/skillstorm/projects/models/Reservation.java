@@ -29,6 +29,7 @@ public class Reservation {
     @NotNull(message = "Room is required")
     private Room room;
 
+   
     @Column(name = "checkindate")
     @NotNull(message = "Check-in date is required")
     @FutureOrPresent(message = "Check-in date must be in the present or future")
@@ -54,7 +55,7 @@ public class Reservation {
      * @return The ReservationDto object.
      */
     public ReservationDto toDto() {
-        return new ReservationDto(id, guest, room, checkInDate, checkOutDate, numberOfGuests, specialRequests);
+        return new ReservationDto(id, guest.getId(), room.getId(), checkInDate, checkOutDate, numberOfGuests, specialRequests);
     }
     
     public Reservation() {}
@@ -78,9 +79,12 @@ public class Reservation {
         this.specialRequests = specialRequests;
     }
 
+    
+    
 	public Long getId() {
 		return id;
 	}
+
 
 	public void setId(Long id) {
 		this.id = id;

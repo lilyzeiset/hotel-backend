@@ -53,31 +53,41 @@ public class ReservationService {
      * @return the created reservation
      * @throws NoSuchElementException if guest or room is not found
      */
-    public ReservationDto createReservation(ReservationDto reservationData) {
-        Guest guest = guestRepository.findById(reservationData.getGuestId())
-                .orElseThrow(() -> new NoSuchElementException("Guest not found"));
+	public ReservationDto createReservation(ReservationDto reservationData) {
+	    Guest guest = guestRepository.findById(reservationData.getGuestId())
+	            .orElseThrow(() -> new NoSuchElementException("Guest not found"));
+	    Room room = roomRepository.findById(reservationData.getRoomId())
+	    		.orElseThrow(() -> new NoSuchElementException("Room not found"));
 
-        Room room = roomRepository.findById(reservationData.getRoomId())
-                .orElseThrow(() -> new NoSuchElementException("Room not found"));
+	    Reservation reservation = new Reservation(
+	            guest,
+	            room,
+	            reservationData.getCheckInDate(),
+	            reservationData.getCheckOutDate(),
+	            reservationData.getNumberOfGuests(),
+	            reservationData.getSpecialRequests()
+	    );
 
-        Reservation reservation = new Reservation(
-                guest,
-                room,
-                reservationData.getCheckInDate(),
-                reservationData.getCheckOutDate(),
-                reservationData.getNumberOfGuests(),
-                reservationData.getSpecialRequests()
-        );
+	    Reservation savedReservation = reservationRepository.save(reservation);
 
-        Reservation savedReservation = reservationRepository.save(reservation);
-        
-        // Send email confirmation
-        String recipientEmail = guest.getEmail();
-        String subject = "Reservation Confirmation";
-        emailService.sendEmailConfirmation(recipientEmail, subject, reservation);
+	    // Convert Reservation to ReservationDto
+	    ReservationDto savedReservationDto = new ReservationDto(
+	            savedReservation.getId(),
+	            savedReservation.getGuest().getId(),
+	            savedReservation.getRoom().getId(),
+	            savedReservation.getCheckInDate(),
+	            savedReservation.getCheckOutDate(),
+	            savedReservation.getNumberOfGuests(),
+	            savedReservation.getSpecialRequests()
+	    );
 
-        return savedReservation.toDto();
-    }
+	    // Send email confirmation
+	    String recipientEmail = guest.getEmail();
+	    String subject = "Reservation Confirmation";
+	    emailService.sendEmailConfirmation(recipientEmail, subject, savedReservationDto);
+
+	    return savedReservationDto;
+	}
     
     
     /**
@@ -118,12 +128,13 @@ public class ReservationService {
     public ReservationDto updateReservation(Long id, ReservationDto reservationData) {
         Reservation reservation = reservationRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("Reservation not found"));
-        
+
         Guest guest = guestRepository.findById(reservationData.getGuestId())
                 .orElseThrow(() -> new NoSuchElementException("Guest not found"));
 
         Room room = roomRepository.findById(reservationData.getRoomId())
-                .orElseThrow(() -> new NoSuchElementException("Room not found"));
+	    		.orElseThrow(() -> new NoSuchElementException("Room not found"));
+        
         reservation.setGuest(guest);
         reservation.setRoom(room);
         reservation.setCheckInDate(reservationData.getCheckInDate());
@@ -132,13 +143,24 @@ public class ReservationService {
         reservation.setSpecialRequests(reservationData.getSpecialRequests());
 
         Reservation updatedReservation = reservationRepository.save(reservation);
-        
-     // Sends update confirmation
+
+        // Convert Reservation to ReservationDto
+        ReservationDto updatedReservationDto = new ReservationDto(
+                updatedReservation.getId(),
+                updatedReservation.getGuest().getId(),
+                updatedReservation.getRoom().getId(),
+                updatedReservation.getCheckInDate(),
+                updatedReservation.getCheckOutDate(),
+                updatedReservation.getNumberOfGuests(),
+                updatedReservation.getSpecialRequests()
+        );
+
+        // Send update confirmation
         String recipientEmail = guest.getEmail();
         String subject = "Reservation Updated";
-        emailService.sendEmailConfirmation(recipientEmail, subject, reservation);
-        
-        return updatedReservation.toDto();
+        emailService.sendEmailConfirmation(recipientEmail, subject, updatedReservationDto);
+
+        return updatedReservationDto;
     }
 
     

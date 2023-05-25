@@ -2,29 +2,42 @@ package com.skillstorm.projects.services;
 
 import javax.mail.internet.MimeMessage;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
-import com.skillstorm.projects.models.Reservation;
+import com.skillstorm.projects.dtos.ReservationDto;
+import com.skillstorm.projects.models.Guest;
+import com.skillstorm.projects.models.Room;
+import com.skillstorm.projects.repositories.GuestRepository;
+import com.skillstorm.projects.repositories.RoomRepository;
 
 @Service
 public class EmailServiceImpl implements EmailService {
 
-    private final JavaMailSender mailSender;
+	@Autowired
+    private JavaMailSender mailSender;
+    
+    @Autowired
+    private GuestRepository guestRepository;
+    
+    @Autowired
+    private RoomRepository roomRepository;
 
-    public EmailServiceImpl(JavaMailSender mailSender) {
-        this.mailSender = mailSender;
-    }
+//    @Autowired
+//    public EmailServiceImpl(JavaMailSender mailSender) {
+//        this.mailSender = mailSender;
+//    }
 
     @Override
-    public void sendEmailConfirmation(String recipientEmail, String subject, Reservation reservation) {
+    public void sendEmailConfirmation(String recipientEmail, String subject, ReservationDto reservationDto) {
         try {
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
             helper.setTo(recipientEmail);
             helper.setSubject(subject);
-            String content = buildEmailContent(reservation);
+            String content = buildEmailContent(reservationDto);
             helper.setText(content, true);
 
             mailSender.send(message);
@@ -33,15 +46,19 @@ public class EmailServiceImpl implements EmailService {
         }
     }
     
-    private String buildEmailContent(Reservation reservation) {
+    private String buildEmailContent(ReservationDto reservationDto) {
         StringBuilder contentBuilder = new StringBuilder();
-        contentBuilder.append("Dear ").append(reservation.getGuest().getName()).append(", your reservation has been confirmed.\n\n");
+        
+        Guest guest = guestRepository.findById(reservationDto.getGuestId()).orElse(null);
+        Room room = roomRepository.findById(reservationDto.getRoomId()).orElse(null);
+        
+        contentBuilder.append("Dear ").append(guest != null ? guest.getName() : "Guest").append(", your reservation has been confirmed.\n\n");
         contentBuilder.append("Reservation Details:\n");
-        contentBuilder.append("Room Number: ").append(reservation.getRoom().getRoomNumber()).append("\n");
-        contentBuilder.append("Check-in Date: ").append(reservation.getCheckInDate()).append("\n");
-        contentBuilder.append("Check-out Date: ").append(reservation.getCheckOutDate()).append("\n");
-        contentBuilder.append("No. of Guests: ").append(reservation.getNumberOfGuests()).append("\n");
-        contentBuilder.append("Special Request: ").append(reservation.getSpecialRequests()).append("\n");
+        contentBuilder.append("Room Number: ").append(room != null ? room.getRoomNumber() : "Room").append("\n");
+        contentBuilder.append("Check-in Date: ").append(reservationDto.getCheckInDate()).append("\n");
+        contentBuilder.append("Check-out Date: ").append(reservationDto.getCheckOutDate()).append("\n");
+        contentBuilder.append("No. of Guests: ").append(reservationDto.getNumberOfGuests()).append("\n");
+        contentBuilder.append("Special Request: ").append(reservationDto.getSpecialRequests()).append("\n");
 
         return contentBuilder.toString();
     }

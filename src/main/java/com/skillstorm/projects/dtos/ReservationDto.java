@@ -7,26 +7,15 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.skillstorm.projects.models.Guest;
-import com.skillstorm.projects.models.Room;
 
 public class ReservationDto {
 
     private Long id;
     
-    @JsonIgnore
     private Long guestId; 
     
-    @JsonIgnore
     private Long roomId;
     
-    @NotNull
-    private Guest guest;
-
-    @NotNull
-    private Room room;
-
     @NotNull
     private LocalDate checkInDate;
 
@@ -51,18 +40,34 @@ public class ReservationDto {
      * @param numberOfGuests  The number of guests for the reservation.
      * @param specialRequests The special requests for the reservation.
      */
-    public ReservationDto(Long id,Guest guest, Room room, LocalDate checkInDate, LocalDate checkOutDate,
+    public ReservationDto(Long id,Long guestId, Long roomId, LocalDate checkInDate, LocalDate checkOutDate,
         int numberOfGuests, String specialRequests) {
         this.id = id;
-        this.guestId = guest.getId();
-        this.roomId = room.getId();
-        this.guest = guest;
-        this.room = room;
+        this.guestId = guestId;
+        this.roomId = roomId;
         this.checkInDate = checkInDate;
         this.checkOutDate = checkOutDate;
         this.numberOfGuests = numberOfGuests;
         this.specialRequests = specialRequests;
     }
+    
+    
+	public ReservationDto() {
+		super();
+	}
+
+	public ReservationDto(Long guestId, Long roomId, @NotNull LocalDate checkInDate, @NotNull LocalDate checkOutDate,
+			@Positive @Min(1) int numberOfGuests, @NotEmpty String specialRequests) {
+		super();
+		this.guestId = guestId;
+		this.roomId = roomId;
+		this.checkInDate = checkInDate;
+		this.checkOutDate = checkOutDate;
+		this.numberOfGuests = numberOfGuests;
+		this.specialRequests = specialRequests;
+	}
+
+
 
 	public Long getId() {
 		return id;
@@ -80,22 +85,7 @@ public class ReservationDto {
 		this.guestId = guestId;
 	}
 
-	public Guest getGuest() {
-		return guest;
-	}
-
-	public void setGuest(Guest guest) {
-		this.guest = guest;
-	}
-
-	public Room getRoom() {
-		return room;
-	}
-
-	public void setRoom(Room room) {
-		this.room = room;
-	}
-
+	
 	public LocalDate getCheckInDate() {
 		return checkInDate;
 	}
