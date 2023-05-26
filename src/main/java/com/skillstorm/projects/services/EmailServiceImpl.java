@@ -48,17 +48,19 @@ public class EmailServiceImpl implements EmailService {
     
     private String buildEmailContent(ReservationDto reservationDto) {
         StringBuilder contentBuilder = new StringBuilder();
+        String newline = "<br />";
         
         Guest guest = guestRepository.findById(reservationDto.getGuestId()).orElse(null);
         Room room = roomRepository.findById(reservationDto.getRoomId()).orElse(null);
         
-        contentBuilder.append("Dear ").append(guest != null ? guest.getName() : "Guest").append(", your reservation has been confirmed.\n\n");
-        contentBuilder.append("Reservation Details:\n");
-        contentBuilder.append("Room Number: ").append(room != null ? room.getRoomNumber() : "Room").append("\n");
-        contentBuilder.append("Check-in Date: ").append(reservationDto.getCheckInDate()).append("\n");
-        contentBuilder.append("Check-out Date: ").append(reservationDto.getCheckOutDate()).append("\n");
-        contentBuilder.append("No. of Guests: ").append(reservationDto.getNumberOfGuests()).append("\n");
-        contentBuilder.append("Special Request: ").append(reservationDto.getSpecialRequests()).append("\n");
+        contentBuilder.append("Dear ").append(guest != null ? guest.getName() : "Guest");
+        contentBuilder.append(", your reservation has been confirmed.").append(newline).append(newline);
+        contentBuilder.append("Reservation Details:").append(newline);
+        contentBuilder.append("Room Number: ").append(room != null ? room.getRoomNumber() : "Room").append(newline);
+        contentBuilder.append("Check-in Date: ").append(reservationDto.getCheckInDate()).append(newline);
+        contentBuilder.append("Check-out Date: ").append(reservationDto.getCheckOutDate()).append(newline);
+        contentBuilder.append("No. of Guests: ").append(reservationDto.getNumberOfGuests()).append(newline);
+        contentBuilder.append("Special Request: ").append(reservationDto.getSpecialRequests()).append(newline);
 
         return contentBuilder.toString();
     }

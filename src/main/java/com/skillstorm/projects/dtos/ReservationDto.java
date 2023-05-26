@@ -125,6 +125,13 @@ public class ReservationDto {
 	public void setRoomId(Long roomId) {
 		this.roomId = roomId;
 	}
+
+
+	@Override
+	public String toString() {
+		return "ReservationDto [id=" + id + ", guestId=" + guestId + ", roomId=" + roomId + ", checkInDate="
+				+ checkInDate + ", checkOutDate=" + checkOutDate + ", numberOfGuests=" + numberOfGuests
+				+ ", specialRequests=" + specialRequests + "]";
+	}
     
 }
-
