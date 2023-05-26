@@ -28,3 +28,6 @@
 || POST /reservations |	creates a new reservation and returns it |
 || PUT /reservations/{id} | updates the reservation entry for {id} and returns it |
 || DELETE /reservations/{id} |	deletes the reservation with {id} |
+|| GET /rooms/available | finds all available rooms |
+|| GET /reservations/guest/{guestid} | finds all reservations for a particular guest based on {guestid} |
+|| POST /guests/login | login authentication |
