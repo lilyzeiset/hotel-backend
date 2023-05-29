@@ -25,15 +25,15 @@ public class RoomController {
 	
 	@GetMapping("/available")
 	public ResponseEntity<List<RoomDto>> findAvailableRooms(
-	        @RequestParam(value = "startDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
-	        @RequestParam(value = "endDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
+	        @RequestParam(value = "checkinDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+	        @RequestParam(value = "checkoutDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
 	        @RequestParam(value = "numGuests", required = false) Integer numGuests,
 	        @RequestParam(value = "minPrice", required = false) BigDecimal minPrice,
 	        @RequestParam(value = "maxPrice", required = false) BigDecimal maxPrice,
 	        @RequestParam(value = "numResultsPerPage") int numResultsPerPage,
 	        @RequestParam(value = "pageNumber", defaultValue = "0") int pageNumber) {
-
-	    List<RoomDto> availableRooms = roomService.findAvailableRooms(
+	    
+		List<RoomDto> availableRooms = roomService.findAvailableRooms(
 	            startDate, endDate, numGuests, minPrice, maxPrice, numResultsPerPage, pageNumber);
 
 	    return ResponseEntity.ok(availableRooms);
@@ -42,8 +42,8 @@ public class RoomController {
 
 	@GetMapping("/available/total")
 	public ResponseEntity<Integer> findAvailableRoomsTotal(
-			@RequestParam(value = "startDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
-	        @RequestParam(value = "endDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
+			@RequestParam(value = "checkinDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+	        @RequestParam(value = "checkoutDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
 	        @RequestParam(value = "numGuests", required = false) Integer numGuests,
 	        @RequestParam(value = "minPrice", required = false) BigDecimal minPrice,
 	        @RequestParam(value = "maxPrice", required = false) BigDecimal maxPrice) {
